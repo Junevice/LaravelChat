@@ -3,13 +3,9 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-<<<<<<< HEAD
 
         <meta name="csrf-token" content="{{csrf_token()}}">
 
-=======
-        <meta name="csrf-token" content="{{ csrf_token() }}">
->>>>>>> 6c46aa87e0f6b52c40798d6b687ef6a2afae8ec6
         <title>Laravel</title>
 
         <!-- Fonts -->
