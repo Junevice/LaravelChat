@@ -9,10 +9,12 @@ Alpine.start();
 import {createApp} from "vue";
 import router from './router';
 import Chats from './components/Chats';
+import UserIndex from './components/UserIndex';
 
 createApp({
     components:{
-        Chats
+        Chats,
+        UserIndex
     }
 }).use(router)
 .mount('#app');
