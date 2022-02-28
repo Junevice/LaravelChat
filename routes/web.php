@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ChatsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,8 +22,11 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
-Route::view('{any}', 'dashboard')
-    ->middleware('auth')
-    ->where('any', '.*');
+// Route::view('{any}', 'dashboard')
+//     ->middleware('auth')
+//     ->where('any', '.*');
     
+Route::get('/messages', [ChatsController::class, 'fetchMessages']);
+Route::post('/messages', [ChatsController::class, 'sendMessage']);
+
 require __DIR__.'/auth.php';
