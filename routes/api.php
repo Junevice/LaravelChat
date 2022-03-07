@@ -4,6 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\API\UserController;
+use App\Http\Controllers\API\MessageController;
+use App\Http\Controllers\API\GroupController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -20,3 +22,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::apiResource('users', UserController::class);
+Route::apiResource('messages', MessageController::class);
+Route::apiResource('groups', GroupController::class);
