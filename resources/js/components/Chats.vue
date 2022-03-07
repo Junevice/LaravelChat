@@ -1,25 +1,51 @@
 <template>
   <div class="flex h-screen antialiased text-gray-800">
     <div class="flex flex-row h-full w-full overflow-x-hidden">
-      <div
-        class="flex flex-col py-8 pl-6 pr-2 w-64 bg-white flex-shrink-0"
-      ></div>
+      <div class="flex flex-col py-8 pl-6 pr-2 w-64 bg-white flex-shrink-0"></div>
       <div class="flex flex-col flex-auto h-full p-6">
-        <div
-          class="
-            flex flex-col flex-auto flex-shrink-0
-            rounded-2xl
-            bg-gray-100
-            h-full
-            p-4
-          "
-        >
+        <div class="flex flex-col flex-auto flex-shrink-0 rounded-2xl bg-gray-100 h-full p-4">
           <div class="flex flex-col h-full overflow-x-auto mb-4">
             <div class="flex flex-col h-full">
               <div class="grid grid-cols-12 gap-y-2">
-                  <div v-for="(message,index) in messages" :key="index">
-                    <strong>{{ message.user.name }}</strong>
-                    {{ message.message }}
+                <template v-for="(message, index) in messages" :key="index">
+             
+                    <div v-if="this.user.name === message.user.name" class="col-start-6 col-end-13 p-3 rounded-lg">
+                      <div class="flex items-center justify-start flex-row-reverse">
+                        <div class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
+                        
+                        </div>
+                        <div class="relative mr-3 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl">
+                          <div>{{ message.message }}</div>
+                        </div>
+                      </div>
+                    </div>
+
+                  <div v-else class="col-start-1 col-end-8 p-3 rounded-lg">
+                    <div class="flex flex-row items-center">
+                      <div class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
+                        
+                      </div>
+                      <div class="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl">
+                        <div>{{ message.message }}</div>
+                      </div>
+                    </div>
+                  </div>
+                </template>
+                <div v-if="activeUser" class="col-start-1 col-end-8 p-3 rounded-lg">
+                    <div class="flex flex-row items-center">
+                      <div class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
+                        
+                      </div>
+                      <div class="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl">
+                        <div>
+                          <div class="typing">
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                          </div>                
+                        </div>
+                      </div>
+                    </div>
                   </div>
               </div>
             </div>
@@ -64,6 +90,7 @@
             <div class="flex-grow ml-4">
               <div class="relative w-full">
                 <input
+                  @keydown="sendTypingEvent"
                   v-model="newMessage"
                   @keyup.enter="sendMessage"
                   type="text"
@@ -122,8 +149,7 @@
                   px-4
                   py-1
                   flex-shrink-0
-                "
-              >
+                ">
                 <span>Send</span>
                 <span class="ml-2">
                   <svg
@@ -153,20 +179,28 @@
 <script>
 export default {
 
-  props: ['user'],
+  props: ["user"],
   data() {
     return {
       messages: [],
-      newMessage: '',
+      newMessage: "",
+      activeUser: false,
     };
   },
 
   created() {
-    this.fetchMessages()
+    this.fetchMessages();
 
-    Echo.join('chat')
-      .listen('MessageSent', (event) => {
+    Echo.join("chat")
+      .listen("MessageSent", (event) => {
         this.messages.push(event.message);
+      })
+      .listenForWhisper('typing', () => {
+        this.activeUser = true
+
+        // setTimeout(() => {
+        //   this.activeUser = false
+        // }, 3000);
       })
   },
 
@@ -177,14 +211,19 @@ export default {
       });
     },
 
-    sendMessage(){
+    sendMessage() {
       this.messages.push({
         user: this.user,
-        message: this.newMessage
-      })
-      axios.post('messages', {message: this.newMessage});
+        message: this.newMessage,
+      });
+      axios.post("messages", { message: this.newMessage });
 
-      this.newMessage = '';
+      this.newMessage = "";
+    },
+
+    sendTypingEvent() {
+      Echo.join('chat')
+        .whisper('typing', this.user)
     }
   },
 };
