@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChatsController;
+use App\Http\Controllers\SocialController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,3 +31,8 @@ Route::get('/messages', [ChatsController::class, 'fetchMessages']);
 Route::post('/messages', [ChatsController::class, 'sendMessage']);
 
 require __DIR__.'/auth.php';
+
+
+//Google Authentication Routes
+Route::get('auth/google', [SocialController::class, 'googleRedirect']);
+Route::get('auth/google/callback', [SocialController::class, 'googleLoginOrRegister']);
