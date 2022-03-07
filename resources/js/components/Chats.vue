@@ -1,10 +1,9 @@
 <template>
   <div class="flex h-screen antialiased text-gray-800">
     <div class="flex flex-row h-full w-full overflow-x-hidden">
-      <div class="flex flex-col py-8 pl-6 pr-2 w-64 bg-white flex-shrink-0"></div>
       <div class="flex flex-col flex-auto h-full p-6">
         <div class="flex flex-col flex-auto flex-shrink-0 rounded-2xl bg-gray-100 h-full p-4">
-          <div class="flex flex-col h-full overflow-x-auto mb-4">
+          <div class="messages flex flex-col h-full overflow-x-auto mb-4 overflow-y-scroll">
             <div class="flex flex-col h-full">
               <div class="grid grid-cols-12 gap-y-2">
                 <template v-for="(message, index) in messages" :key="index">
@@ -46,7 +45,7 @@
                         </div>
                       </div>
                     </div>
-                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -90,11 +89,12 @@
             <div class="flex-grow ml-4">
               <div class="relative w-full">
                 <input
-                  @keydown="sendTypingEvent"
                   v-model="newMessage"
+                  @input="sendTypingEvent"
                   @keyup.enter="sendMessage"
                   type="text"
                   class="
+                    inputText
                     flex
                     w-full
                     border
@@ -177,6 +177,7 @@
 </template>
 
 <script>
+import { nextTick } from 'vue'
 export default {
 
   props: ["user"],
@@ -194,13 +195,13 @@ export default {
     Echo.join("chat")
       .listen("MessageSent", (event) => {
         this.messages.push(event.message);
+        this.activeUser = false
       })
       .listenForWhisper('typing', () => {
         this.activeUser = true
-
-        // setTimeout(() => {
-        //   this.activeUser = false
-        // }, 3000);
+      })
+      .listenForWhisper('notTyping', () => {
+        this.activeUser = false
       })
   },
 
@@ -221,10 +222,14 @@ export default {
       this.newMessage = "";
     },
 
-    sendTypingEvent() {
-      Echo.join('chat')
-        .whisper('typing', this.user)
-    }
+    async sendTypingEvent() {
+      await nextTick()
+      if(this.newMessage !== ""){
+        Echo.join('chat').whisper('typing', this.user)
+      }else{
+          Echo.join('chat').whisper('notTyping')
+      }
+    },
   },
 };
 </script>

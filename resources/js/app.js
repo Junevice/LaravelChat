@@ -10,11 +10,13 @@ import {createApp} from "vue";
 import router from './router';
 import Chats from './components/Chats';
 import UserIndex from './components/UserIndex';
+import { autoscroll } from 'vue-autoscroll';
 
-createApp({
+const app = createApp({
     components:{
         Chats,
         UserIndex
     }
 }).use(router)
 .mount('#app');
+
