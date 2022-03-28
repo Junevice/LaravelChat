@@ -51,7 +51,17 @@
                     {{ __('Log in') }}
                 </x-button>
             </div>
-            
+            <div class="flex items-center justify-center mt-4">
+                <a href="/auth/google" class="underline text-sm text-gray-600 hover:text-gray-900">
+                    Login With Google
+                </a>
+            </div>
+            <div class="flex items-center justify-end mt-4">
+                <a class="btn" href="/auth/twitter"
+                    style="background: #1E9DEA; padding: 10px; width: 100%; text-align: center; display: block; border-radius:4px; color: #ffffff;">
+                    Login with Twitter
+                </a>
+            </div>
         </form>
     </x-auth-card>
 </x-guest-layout>

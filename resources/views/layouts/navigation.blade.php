@@ -44,6 +44,11 @@
                                 {{ __('Log Out') }}
                             </x-dropdown-link>
                         </form>
+                        <form action="https://www.paypal.com/donate" method="post" target="_top">
+                            <input type="hidden" name="hosted_button_id" value="NLYJ4ADZG2KYN" />
+                            <input type="image" src="https://www.paypalobjects.com/fr_FR/FR/i/btn/btn_donate_LG.gif" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Bouton Faites un don avec PayPal" />
+                            <img alt="" src="https://www.paypal.com/fr_FR/i/scr/pixel.gif" width="1" height="1" />
+                        </form>
                     </x-slot>
                 </x-dropdown>
             </div>
