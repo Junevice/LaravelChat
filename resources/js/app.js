@@ -10,7 +10,6 @@ import {createApp} from "vue";
 import router from './router';
 import Chats from './components/Chats';
 import UserIndex from './components/UserIndex';
-import { autoscroll } from 'vue-autoscroll';
 
 const app = createApp({
     components:{

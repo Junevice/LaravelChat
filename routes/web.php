@@ -35,4 +35,8 @@ require __DIR__.'/auth.php';
 
 //Google Authentication Routes
 Route::get('auth/google', [SocialController::class, 'googleRedirect']);
-Route::get('auth/google/callback', [SocialController::class, 'googleLoginOrRegister']);
+Route::get('auth/google/callback', [SocialController::class, 'googleCallback']);
+
+//Twitter Authentification Routes
+Route::get('auth/twitter', [SocialController::class, 'loginwithTwitter']);
+Route::get('auth/callback/twitter', [SocialController::class, 'cbTwitter']);
