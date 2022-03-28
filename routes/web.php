@@ -18,6 +18,15 @@ use App\Http\Controllers\SocialController;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('groups/{id}', function($id){
+    $query = auth()->user()->groups()->get()->pluck('id');
+    $ids = [];
+    foreach ($query as $key => $value) {
+        array_push($ids, $value);
+    }
+    if(!in_array($id, $ids)) return redirect('/dashboard');
+    return view('groups', ['id' => $id]);
+})->middleware(['auth'])->name('groups');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -28,6 +37,7 @@ Route::get('/dashboard', function () {
 //     ->where('any', '.*');
     
 Route::get('/messages', [ChatsController::class, 'fetchMessages']);
+Route::get('/groups', [ChatsController::class, 'fetchGroups']);
 Route::post('/messages', [ChatsController::class, 'sendMessage']);
 
 require __DIR__.'/auth.php';

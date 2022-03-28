@@ -1,9 +1,10 @@
 <template>
   <div class="flex h-screen antialiased text-gray-800">
     <div class="flex flex-row h-full w-full overflow-x-hidden">
-      <div class="flex flex-col flex-auto h-full p-6">
+      <Conversation/>
+      <div class="flex flex-col flex-auto h-screen p-6">
         <div class="flex flex-col flex-auto flex-shrink-0 rounded-2xl bg-gray-100 h-full p-4">
-          <div class="messages flex flex-col h-full overflow-x-auto mb-4 overflow-y-scroll">
+          <div class="messages flex flex-col h-screen overflow-x-auto mb-4 overflow-y-scroll">
             <div class="flex flex-col h-full">
               <div class="grid grid-cols-12 gap-y-2">
                 <template v-for="(message, index) in messages" :key="index">
@@ -11,7 +12,7 @@
                     <div v-if="this.user.name === message.user.name" class="col-start-6 col-end-13 p-3 rounded-lg">
                       <div class="flex items-center justify-start flex-row-reverse">
                         <div class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
-                        
+                          {{message.user.name.substr(0,1).toUpperCase()}}
                         </div>
                         <div class="relative mr-3 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl">
                           <div>{{ message.message }}</div>
@@ -22,7 +23,7 @@
                   <div v-else class="col-start-1 col-end-8 p-3 rounded-lg">
                     <div class="flex flex-row items-center">
                       <div class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
-                        
+                        {{message.user.name.substr(0,1).toUpperCase()}}
                       </div>
                       <div class="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl">
                         <div>{{ message.message }}</div>
@@ -178,9 +179,13 @@
 
 <script>
 import { nextTick } from 'vue'
+import Conversation from './Conversation.vue'
 export default {
 
-  props: ["user"],
+  props: ["user", "group"],
+  components: {
+    Conversation
+  },
   data() {
     return {
       messages: [],
@@ -192,7 +197,8 @@ export default {
   created() {
     this.fetchMessages();
 
-    Echo.join("chat")
+
+    Echo.private(`group.${this.group}`)
       .listen("MessageSent", (event) => {
         this.messages.push(event.message);
         this.activeUser = false
@@ -207,8 +213,8 @@ export default {
 
   methods: {
     fetchMessages() {
-      axios.get("messages").then((response) => {
-        this.messages = response.data;
+      axios.get("/messages", {params: {group_id: this.group}}).then((response) => {
+        this.messages = response.data[0].messages;
       });
     },
 
@@ -217,7 +223,7 @@ export default {
         user: this.user,
         message: this.newMessage,
       });
-      axios.post("messages", { message: this.newMessage });
+      axios.post("/messages", { message: this.newMessage, group_id: this.group });
 
       this.newMessage = "";
     },
@@ -225,9 +231,9 @@ export default {
     async sendTypingEvent() {
       await nextTick()
       if(this.newMessage !== ""){
-        Echo.join('chat').whisper('typing', this.user)
+        Echo.private(`group.${this.group}`).whisper('typing', this.user)
       }else{
-          Echo.join('chat').whisper('notTyping')
+          Echo.private(`group.${this.group}`).whisper('notTyping')
       }
     },
   },
