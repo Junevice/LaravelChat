@@ -1,55 +1,145 @@
 <template>
   <div class="flex h-screen antialiased text-gray-800">
     <div class="flex flex-row h-full w-full overflow-x-hidden">
-      <Conversation/>
+      <Conversation />
       <div class="flex flex-col flex-auto h-screen p-6">
-        <div class="flex flex-col flex-auto flex-shrink-0 rounded-2xl bg-gray-100 h-full p-4">
-          <div class="messages flex flex-col h-screen overflow-x-auto mb-4 overflow-y-scroll">
+        <div
+          class="
+            flex flex-col flex-auto flex-shrink-0
+            rounded-2xl
+            bg-gray-100
+            h-full
+            p-4
+          "
+        >
+          <div
+            class="
+              messages
+              flex flex-col
+              h-screen
+              overflow-x-auto
+              mb-4
+              overflow-y-scroll
+            "
+          >
             <div class="flex flex-col h-full">
               <div class="grid grid-cols-12 gap-y-2">
                 <template v-for="(message, index) in messages" :key="index">
-             
-                    <div v-if="this.user.name === message.user.name" class="col-start-6 col-end-13 p-3 rounded-lg">
-                      <div class="flex items-center justify-start flex-row-reverse">
-                        <div class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
-                          {{message.user.name.substr(0,1).toUpperCase()}}
-                        </div>
-                        <div class="relative mr-3 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl">
-                          <div>{{ message.message }}</div>
-                        </div>
+                  <div
+                    v-if="this.user.name === message.user.name"
+                    class="col-start-6 col-end-13 p-3 rounded-lg"
+                  >
+                    <div
+                      class="flex items-center justify-start flex-row-reverse"
+                    >
+                      <div
+                        class="
+                          flex
+                          items-center
+                          justify-center
+                          h-10
+                          w-10
+                          rounded-full
+                          bg-indigo-500
+                          flex-shrink-0
+                        "
+                      >
+                        {{ message.user.name.substr(0, 1).toUpperCase() }}
+                      </div>
+                      <div
+                        class="
+                          relative
+                          mr-3
+                          text-sm
+                          bg-indigo-100
+                          py-2
+                          px-4
+                          shadow
+                          rounded-xl
+                        "
+                      >
+                        <div>{{ message.message }}</div>
                       </div>
                     </div>
+                  </div>
 
                   <div v-else class="col-start-1 col-end-8 p-3 rounded-lg">
                     <div class="flex flex-row items-center">
-                      <div class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
-                        {{message.user.name.substr(0,1).toUpperCase()}}
+                      <div
+                        class="
+                          flex
+                          items-center
+                          justify-center
+                          h-10
+                          w-10
+                          rounded-full
+                          bg-indigo-500
+                          flex-shrink-0
+                        "
+                      >
+                        {{ message.user.name.substr(0, 1).toUpperCase() }}
                       </div>
-                      <div class="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl">
+                      <div
+                        class="
+                          relative
+                          ml-3
+                          text-sm
+                          bg-white
+                          py-2
+                          px-4
+                          shadow
+                          rounded-xl
+                        "
+                      >
                         <div>{{ message.message }}</div>
                       </div>
                     </div>
                   </div>
                 </template>
-                <div v-if="activeUser" class="col-start-1 col-end-8 p-3 rounded-lg">
-                    <div class="flex flex-row items-center">
-                      <div class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
-                        
-                      </div>
-                      <div class="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl">
-                        <div>
-                          <div class="typing">
-                            <div class="dot"></div>
-                            <div class="dot"></div>
-                            <div class="dot"></div>
-                          </div>                
+                <div
+                  v-if="activeUser"
+                  class="col-start-1 col-end-8 p-3 rounded-lg"
+                >
+                  <div class="flex flex-row items-center">
+                    <div
+                      class="
+                        flex
+                        items-center
+                        justify-center
+                        h-10
+                        w-10
+                        rounded-full
+                        bg-indigo-500
+                        flex-shrink-0
+                      "
+                    ></div>
+                    <div
+                      class="
+                        relative
+                        ml-3
+                        text-sm
+                        bg-white
+                        py-2
+                        px-4
+                        shadow
+                        rounded-xl
+                      "
+                    >
+                      <div>
+                        <div class="typing">
+                          <div class="dot"></div>
+                          <div class="dot"></div>
+                          <div class="dot"></div>
                         </div>
                       </div>
                     </div>
+                  </div>
                 </div>
               </div>
+             <button class="new-message text-sm rounded-xl" @click="scrollToButtom"></button>
             </div>
           </div>
+         
           <div
             class="
               flex flex-row
@@ -150,7 +240,8 @@
                   px-4
                   py-1
                   flex-shrink-0
-                ">
+                "
+              >
                 <span>Send</span>
                 <span class="ml-2">
                   <svg
@@ -178,13 +269,12 @@
 </template>
 
 <script>
-import { nextTick } from 'vue'
-import Conversation from './Conversation.vue'
+import { nextTick } from "vue";
+import Conversation from "./Conversation.vue";
 export default {
-
   props: ["user", "group"],
   components: {
-    Conversation
+    Conversation,
   },
   data() {
     return {
@@ -197,25 +287,39 @@ export default {
   created() {
     this.fetchMessages();
 
-
     Echo.private(`group.${this.group}`)
       .listen("MessageSent", (event) => {
         this.messages.push(event.message);
-        this.activeUser = false
+        this.activeUser = false;
+         document.querySelector('.new-message').innerHTML = "1 nouveau message";
+         document.querySelector('.new-message').style.display = 'block';
       })
-      .listenForWhisper('typing', () => {
-        this.activeUser = true
+      .listenForWhisper("typing", () => {
+        this.activeUser = true;
+        document.querySelector('.new-message').innerHTML = "En train d'écrire...";
+        document.querySelector('.new-message').style.display = 'block';
+        
       })
-      .listenForWhisper('notTyping', () => {
-        this.activeUser = false
-      })
+      .listenForWhisper("notTyping", () => {
+        this.activeUser = false;
+        document.querySelector('.new-message').style.display = 'none';
+      });
+  },
+
+  mounted() {
+    setTimeout(() => {
+      let messages = document.querySelector(".messages");
+      messages.scrollTo({ top: messages.scrollHeight, behavior: "smooth" });
+    }, 1000);
   },
 
   methods: {
     fetchMessages() {
-      axios.get("/messages", {params: {group_id: this.group}}).then((response) => {
-        this.messages = response.data[0].messages;
-      });
+      axios
+        .get("/messages", { params: { group_id: this.group } })
+        .then((response) => {
+          this.messages = response.data[0].messages;
+        });
     },
 
     sendMessage() {
@@ -223,19 +327,46 @@ export default {
         user: this.user,
         message: this.newMessage,
       });
-      axios.post("/messages", { message: this.newMessage, group_id: this.group });
+      axios.post("/messages", {
+        message: this.newMessage,
+        group_id: this.group,
+      });
 
       this.newMessage = "";
+      setTimeout(() => {
+        let messages = document.querySelector(".messages");
+        messages.scrollTo({ top: messages.scrollHeight, behavior: "smooth" });
+      }, 200);
     },
 
     async sendTypingEvent() {
-      await nextTick()
-      if(this.newMessage !== ""){
-        Echo.private(`group.${this.group}`).whisper('typing', this.user)
-      }else{
-          Echo.private(`group.${this.group}`).whisper('notTyping')
+      await nextTick();
+      if (this.newMessage !== "") {
+        Echo.private(`group.${this.group}`).whisper("typing", this.user);
+      } else {
+        Echo.private(`group.${this.group}`).whisper("notTyping");
       }
     },
+
+    scrollToButtom() {
+      let messages = document.querySelector(".messages");
+      messages.scrollTo({ top: messages.scrollHeight, behavior: "smooth" });
+      document.querySelector('.new-message').style.display = 'none';
+    }
   },
 };
 </script>
+<style scoped>
+  .new-message{
+    background-color: #6366f1;
+    width: 150px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin: 0 auto;
+    color: white;
+    margin-bottom: 20px;
+    position: sticky;
+    bottom: 0;
+    display: none;
+  }
+</style>

@@ -49,7 +49,7 @@
     <template v-for="(group,index) in groups" :key="index">
       <router-link :to="'/groups/' + group.id" custom v-slot="{ href }">
         <a :href="href" >
-        <button class="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2">
+        <button class="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2 w-full">
           <div
             class="
               flex
