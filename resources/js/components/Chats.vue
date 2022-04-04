@@ -316,7 +316,7 @@ export default {
   methods: {
     fetchMessages() {
       axios
-        .get("/messages", { params: { group_id: this.group } })
+        .get("/api/messages", { params: { group_id: this.group } })
         .then((response) => {
           this.messages = response.data[0].messages;
         });
@@ -327,7 +327,7 @@ export default {
         user: this.user,
         message: this.newMessage,
       });
-      axios.post("/messages", {
+      axios.post("/api/messages", {
         message: this.newMessage,
         group_id: this.group,
       });

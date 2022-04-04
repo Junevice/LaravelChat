@@ -4,7 +4,11 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Message;
+use App\Models\Group;
 use Illuminate\Http\Request;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use App\Events\MessageSent;
 
 class MessageController extends Controller
 {
@@ -13,9 +17,9 @@ class MessageController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return 'messages';
+        return Group::with('messages.user')->where('id', $request->group_id)->get();
     }
 
     /**
@@ -26,7 +30,13 @@ class MessageController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $user = User::find(Auth::guard('web')->user()->id);
+        $message = $user->messages()->create([
+            'message'=> $request->message,
+            'group_id' => $request->group_id
+        ]);
+
+        broadcast(new MessageSent($message->load('user'), $request->group_id))->toOthers();
     }
 
     /**

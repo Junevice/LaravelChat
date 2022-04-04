@@ -88,7 +88,7 @@ export default {
 
   methods: {
     fetchGroups() {
-      axios.get("/groups").then((response) => {
+      axios.get("/api/groups").then((response) => {
         this.groups = response.data;
       });
     },

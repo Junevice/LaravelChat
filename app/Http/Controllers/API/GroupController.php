@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Group;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class GroupController extends Controller
 {
@@ -15,7 +16,9 @@ class GroupController extends Controller
      */
     public function index()
     {
-        return 'groups';
+        return Group::whereHas('users', function($query) {
+            $query->where('user_id', Auth::guard('web')->user()->id);
+        })->get();
     }
 
     /**
