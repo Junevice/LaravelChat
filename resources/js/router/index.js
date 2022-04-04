@@ -1,7 +1,7 @@
 import {createRouter, createWebHistory} from 'vue-router';
 import Conversation from '../components/Conversation';
-import UserIndex from '../components/UserIndex'
-import Chats from '../components/Chats'
+import UserIndex from '../components/UserIndex';
+import Chats from '../components/Chats';
 
 const routes = [
     {
@@ -18,7 +18,7 @@ const routes = [
         path:'/userlist',
         name:'user.index',
         component: UserIndex,
-    }
+    },
 ];
 
 export default createRouter({

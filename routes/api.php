@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\MessageController;
 use App\Http\Controllers\API\GroupController;
+
+use App\Http\Controllers\SocialController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -17,10 +19,15 @@ use App\Http\Controllers\API\GroupController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+Route::get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::group(['middleware' => ['auth:sanctum']], function(){
+    Route::apiResource('messages', MessageController::class);
+    Route::apiResource('groups', GroupController::class);
+});
+
 Route::apiResource('users', UserController::class);
-Route::apiResource('messages', MessageController::class);
-Route::apiResource('groups', GroupController::class);
+
+Route::get('userinfos', [SocialController::class, 'getinfos'] );

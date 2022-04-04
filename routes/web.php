@@ -26,15 +26,13 @@ Route::get('groups/{id}', function($id){
     }
     if(!in_array($id, $ids)) return redirect('/dashboard');
     return view('groups', ['id' => $id]);
-})->middleware(['auth'])->name('groups');
+})->middleware(['auth:sanctum'])->name('groups');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+})->middleware(['auth:sanctum'])->name('dashboard');
 
-// Route::view('{any}', 'dashboard')
-//     ->middleware('auth')
-//     ->where('any', '.*');
+
     
 Route::get('/messages', [ChatsController::class, 'fetchMessages']);
 Route::get('/groups', [ChatsController::class, 'fetchGroups']);
@@ -50,3 +48,9 @@ Route::get('auth/google/callback', [SocialController::class, 'googleCallback']);
 //Twitter Authentification Routes
 Route::get('auth/twitter', [SocialController::class, 'loginwithTwitter']);
 Route::get('auth/callback/twitter', [SocialController::class, 'cbTwitter']);
+
+
+//Erreur trop de requetes
+Route::view('{any}', 'dashboard')
+    ->middleware('auth:sanctum')
+    ->where('any', '.*');

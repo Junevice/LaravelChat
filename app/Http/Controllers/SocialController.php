@@ -39,7 +39,7 @@ class SocialController extends Controller
             $user->save();
         }
 
-        Auth::login($user);
+        Auth::guard('web')->login($user);
     }
 
     public function loginwithTwitter()
@@ -62,8 +62,7 @@ class SocialController extends Controller
                     $userWhere->save();
                 }
 
-                Auth::login($userWhere);
-     
+                Auth::guard('web')->login($userWhere);
                 return redirect('/dashboard');
       
             }else{
@@ -75,13 +74,23 @@ class SocialController extends Controller
                     'password' => encrypt('password_twitter')
                 ]);
      
-                Auth::login($getUser);
-      
+                Auth::guard('web')->login($getUser);
                 return redirect('/dashboard');
             }
      
         } catch (Exception $e) {
             dd($e->getMessage());
         }
+    }
+
+    public function getinfos(){
+        $user = Auth::guard('web')->user();
+        return $user;
+    }
+
+
+    public function logout(Request $request){
+        Auth::guard('web')->logout();
+        return redirect()->route('login');
     }
 }
