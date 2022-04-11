@@ -3,44 +3,93 @@
 @import 'tailwindcss/utilities';
 
 .typing {
-    align-items: center;
-    display: flex;
-    height: 17px;
+  align-items: center;
+  display: flex;
+  height: 17px;
+}
+
+.typing .dot {
+  animation: mercuryTypingAnimation 1.8s infinite ease-in-out;
+  background-color: #6366f1;
+  border-radius: 50%;
+  height: 7px;
+  margin-right: 4px;
+  vertical-align: middle;
+  width: 7px;
+  display: inline-block;
+}
+
+.typing .dot:nth-child(1) {
+  animation-delay: 200ms;
+}
+
+.typing .dot:nth-child(2) {
+  animation-delay: 300ms;
+}
+
+.typing .dot:nth-child(3) {
+  animation-delay: 400ms;
+}
+
+.typing .dot:last-child {
+  margin-right: 0;
+}
+
+@keyframes mercuryTypingAnimation {
+  0% {
+    transform: translateY(0px);
+    background-color: #6366f1;
   }
-  .typing .dot {
-    animation: mercuryTypingAnimation 1.8s infinite ease-in-out;
-    background-color: #6366f1 ;
-    border-radius: 50%;
-    height: 7px;
-    margin-right: 4px;
-    vertical-align: middle;
-    width: 7px;
-    display: inline-block;
+
+  28% {
+    transform: translateY(-7px);
+    background-color: #6366f1;
   }
-  .typing .dot:nth-child(1) {
-    animation-delay: 200ms;
+
+  44% {
+    transform: translateY(0px);
+    background-color: #6366f1;
   }
-  .typing .dot:nth-child(2) {
-    animation-delay: 300ms;
-  }
-  .typing .dot:nth-child(3) {
-    animation-delay: 400ms;
-  }
-  .typing .dot:last-child {
-    margin-right: 0;
-  }
-  
-  @keyframes mercuryTypingAnimation {
-    0% {
-      transform: translateY(0px);
-      background-color: #6366f1; 
-    }
-    28% {
-      transform: translateY(-7px);
-      background-color:#6366f1;
-    }
-    44% {
-      transform: translateY(0px);
-      background-color: #6366f1;
-    }
-  }
+}
+
+.container {
+  height: 550px;
+  width: 700px;
+  margin-bottom: 10vh;
+  background-color: white;
+  border-radius: 20px;
+}
+
+.left {
+  background-color: white;
+  height: 100%;
+  width: 200px;
+  float: left;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border-left: 2px solid #707070;
+  border-top: 2px solid #707070;
+  border-bottom: 2px solid #707070;
+}
+
+.right {
+  background-color: #F0F0F0;
+  height: 100%;
+  width: 500px;
+  float: right;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  border: 2px #707070 solid;
+}
+
+.top {
+  width: 100%;
+  height: 50px;
+  border-top-left-radius: 8px;
+  background-color: #CCCCCC;
+  border-bottom: 2px solid #707070;
+}
+
+.bot {
+  width: 100%;
+}
