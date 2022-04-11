@@ -1,6 +1,6 @@
 import {createRouter, createWebHistory} from 'vue-router';
 import UserIndex from '../components/UserIndex';
-import Chats from '../components/Chats';
+import Messages from '../pages/Messages';
 import Dashboard from '../pages/Dashboard';
 
 const routes = [
@@ -12,7 +12,7 @@ const routes = [
     {
         path:'/groups/:id',
         name: 'Groups',
-        component:Chats,
+        component: Messages,
     },
     {
         path:'/userlist',

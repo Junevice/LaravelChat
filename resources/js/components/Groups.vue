@@ -1,20 +1,18 @@
 <template>
   <template v-for="(group, index) in groups" :key="index">
-    <router-link :to="'/groups/' + group.id" custom v-slot="{ href }">
-      <a :href="href">
-        <button
-          class="
-            flex flex-row
-            items-center
-            hover:bg-gray-100
-            rounded-xl
-            p-2
-            w-full
-          "
+    <router-link :to="'/groups/' + group.id">
+      <button
+        class="
+          flex flex-row
+          items-center
+          hover:bg-gray-100
+          rounded-xl
+          p-2
+          w-full
+        "
         :id="'group-' + group.id">
-          <div class="ml-2 text-sm text-primary">{{ group.name }}</div>
-        </button>
-      </a>
+        <div class="ml-2 text-sm text-primary">{{ group.name }}</div>
+      </button>
     </router-link>
   </template>
 </template>
@@ -33,7 +31,24 @@ export default {
   },
 
   updated() {
-    document.querySelector(`#group-${this.activeGroup}`).classList.add("bg-gray-100")
+    if (this.activeGroup) {
+      document
+        .querySelector(`#group-${this.activeGroup}`)
+        .classList.add("bg-gray-100");
+    }
+  },
+
+  watch: {
+    $route(to, from) {
+      if(from.params.id){
+        if (to.params.id !== from.params.id) {
+           document
+          .querySelector(`#group-${to.params.id}`)
+          .classList.add("bg-gray-100");
+          document.querySelector(`#group-${from.params.id}`).classList.remove("bg-gray-100");
+        }
+      }
+    },
   },
 
   methods: {
@@ -64,7 +79,7 @@ button {
   border-bottom: 1px solid #707070;
   border-width: 80%;
 }
-button div{
+button div {
   text-overflow: ellipsis;
   overflow: hidden;
 }

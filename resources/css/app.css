@@ -9,8 +9,8 @@
 }
 
 .typing .dot {
-  animation: mercuryTypingAnimation 1.8s infinite ease-in-out;
-  background-color: #6366f1;
+  animation: TypingAnimation 1.8s infinite ease-in-out;
+  background-color: white;
   border-radius: 50%;
   height: 7px;
   margin-right: 4px;
@@ -35,26 +35,27 @@
   margin-right: 0;
 }
 
-@keyframes mercuryTypingAnimation {
+@keyframes TypingAnimation {
   0% {
     transform: translateY(0px);
-    background-color: #6366f1;
+    background-color: white;
   }
 
   28% {
     transform: translateY(-7px);
-    background-color: #6366f1;
+    background-color: white;
   }
 
   44% {
     transform: translateY(0px);
-    background-color: #6366f1;
+    background-color: white;
   }
 }
 
 .container {
   height: 550px;
   width: 700px;
+  margin-top: 10vh;
   margin-bottom: 10vh;
   background-color: white;
   border-radius: 20px;

@@ -1,313 +1,183 @@
 <template>
-  <Layout>
-    <div class="container">
-      <div class="left">
-        <div class="top"></div>
-        <div class="bot">
-          <Groups :activeGroup="this.group"/>
-        </div>
-      </div>
-      <div class="right">
-        <div class="flex h-screen antialiased text-gray-800">
-          <div class="flex flex-row h-full w-full overflow-x-hidden">
-            <div class="flex flex-col flex-auto h-screen p-6">
+  <div v-if="this.loading" :key="this.loading" class="h-full flex justify-center items-center">
+    <div class="loading">
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+  </div>
+  <div class="overflow-hidden container-messages">
+    <div class="messages flex flex-col overflow-x-auto overflow-y-scroll">
+      <div class="flex flex-col h-full">
+        <div class="grid grid-cols-12 gap-y-2">
+          <template v-for="(message, index) in messages" :key="index">
+            <div
+              v-if="this.user.name === message.user.name"
+              class="col-start-6 col-end-13 p-3 rounded-lg"
+            >
+              <div class="flex items-center justify-start flex-row-reverse">
+                <div class="flex items-center justify-center flex-shrink-0">
+                  <img src="/images/rose.svg" width="30" height="30" />
+                </div>
+                <div
+                  class="
+                    relative
+                    mr-3
+                    text-sm
+                    bg-green
+                    py-1
+                    perso-message
+                    rounded-xl
+                    text-white
+                  "
+                >
+                  <div>{{ message.message }}</div>
+                  <div class="time">{{ message.time }}</div>
+                </div>
+              </div>
+            </div>
+
+            <div v-else class="col-start-1 col-end-8 p-3 rounded-lg">
+              <div class="flex flex-row items-center">
+                <div class="flex items-center justify-center flex-shrink-0">
+                  <img src="" />
+                </div>
+                <div
+                  class="
+                    relative
+                    ml-3
+                    text-sm
+                    bg-gray-message
+                    py-1
+                    other-message
+                    text-white
+                    rounded-xl
+                    flex 
+                    flex-col
+                  "
+                >
+                  <div class="name">{{ message.user.name }}</div>
+                  <div>{{ message.message }}</div>
+                  <div class="time">{{ message.time }}</div>
+                </div>
+              </div>
+            </div>
+          </template>
+          <div v-if="activeUser" class="col-start-1 col-end-8 p-3 rounded-lg">
+            <div class="flex flex-row items-center">
+              <div class="flex items-center justify-center flex-shrink-0">
+                <img src="" />
+              </div>
               <div
                 class="
-                  flex flex-col flex-auto flex-shrink-0
-                  rounded-2xl
-                  h-full
-                  p-4
+                  relative
+                  ml-3
+                  text-sm
+                  bg-gray-message
+                  py-2
+                  px-4
+                  shadow
+                  rounded-xl
                 "
               >
-                <div
-                  class="
-                    messages
-                    flex flex-col
-                    h-screen
-                    overflow-x-auto
-                    mb-4
-                    overflow-y-scroll
-                  "
-                >
-                  <div class="flex flex-col h-full">
-                    <div class="grid grid-cols-12 gap-y-2">
-                      <template
-                        v-for="(message, index) in messages"
-                        :key="index"
-                      >
-                        <div
-                          v-if="this.user.name === message.user.name"
-                          class="col-start-6 col-end-13 p-3 rounded-lg"
-                        >
-                          <div
-                            class="
-                              flex
-                              items-center
-                              justify-start
-                              flex-row-reverse
-                            "
-                          >
-                            <div
-                              class="
-                                flex
-                                items-center
-                                justify-center
-                                h-10
-                                w-10
-                                rounded-full
-                                bg-indigo-500
-                                flex-shrink-0
-                              "
-                            >
-                              {{ message.user.name.substr(0, 1).toUpperCase() }}
-                            </div>
-                            <div
-                              class="
-                                relative
-                                mr-3
-                                text-sm
-                                bg-indigo-100
-                                py-2
-                                px-4
-                                shadow
-                                rounded-xl
-                              "
-                            >
-                              <div>{{ message.message }}</div>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div
-                          v-else
-                          class="col-start-1 col-end-8 p-3 rounded-lg"
-                        >
-                          <div class="flex flex-row items-center">
-                            <div
-                              class="
-                                flex
-                                items-center
-                                justify-center
-                                h-10
-                                w-10
-                                rounded-full
-                                bg-indigo-500
-                                flex-shrink-0
-                              "
-                            >
-                              {{ message.user.name.substr(0, 1).toUpperCase() }}
-                            </div>
-                            <div
-                              class="
-                                relative
-                                ml-3
-                                text-sm
-                                bg-white
-                                py-2
-                                px-4
-                                shadow
-                                rounded-xl
-                              "
-                            >
-                              <div>{{ message.message }}</div>
-                            </div>
-                          </div>
-                        </div>
-                      </template>
-                      <div
-                        v-if="activeUser"
-                        class="col-start-1 col-end-8 p-3 rounded-lg"
-                      >
-                        <div class="flex flex-row items-center">
-                          <div
-                            class="
-                              flex
-                              items-center
-                              justify-center
-                              h-10
-                              w-10
-                              rounded-full
-                              bg-indigo-500
-                              flex-shrink-0
-                            "
-                          ></div>
-                          <div
-                            class="
-                              relative
-                              ml-3
-                              text-sm
-                              bg-white
-                              py-2
-                              px-4
-                              shadow
-                              rounded-xl
-                            "
-                          >
-                            <div>
-                              <div class="typing">
-                                <div class="dot"></div>
-                                <div class="dot"></div>
-                                <div class="dot"></div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <button
-                      class="new-message text-sm rounded-xl"
-                      @click="scrollToButtom"
-                    ></button>
-                  </div>
-                </div>
-
-                <div
-                  class="
-                    flex flex-row
-                    items-center
-                    h-16
-                    rounded-xl
-                    bg-white
-                    w-full
-                    px-4
-                  "
-                >
-                  <div>
-                    <button
-                      class="
-                        flex
-                        items-center
-                        justify-center
-                        text-gray-400
-                        hover:text-gray-600
-                      "
-                    >
-                      <svg
-                        class="w-5 h-5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"
-                        ></path>
-                      </svg>
-                    </button>
-                  </div>
-                  <div class="flex-grow ml-4">
-                    <div class="relative w-full">
-                      <input
-                        v-model="newMessage"
-                        @input="sendTypingEvent"
-                        @keyup.enter="sendMessage"
-                        type="text"
-                        class="
-                          inputText
-                          flex
-                          w-full
-                          border
-                          rounded-xl
-                          focus:outline-none focus:border-indigo-300
-                          pl-4
-                          h-10
-                        "
-                      />
-                      <button
-                        class="
-                          absolute
-                          flex
-                          items-center
-                          justify-center
-                          h-full
-                          w-12
-                          right-0
-                          top-0
-                          text-gray-400
-                          hover:text-gray-600
-                        "
-                      >
-                        <svg
-                          class="w-6 h-6"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                          ></path>
-                        </svg>
-                      </button>
-                    </div>
-                  </div>
-                  <div class="ml-4">
-                    <button
-                      @click="sendMessage"
-                      class="
-                        flex
-                        items-center
-                        justify-center
-                        bg-indigo-500
-                        hover:bg-indigo-600
-                        rounded-xl
-                        text-white
-                        px-4
-                        py-1
-                        flex-shrink-0
-                      "
-                    >
-                      <span>Send</span>
-                      <span class="ml-2">
-                        <svg
-                          class="w-4 h-4 transform rotate-45 -mt-px"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
-                          ></path>
-                        </svg>
-                      </span>
-                    </button>
+                <div>
+                  <div class="typing">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
+        <button
+          class="new-message text-sm rounded-xl bg-green mb-4"
+          @click="scrollToButtom"
+        ></button>
       </div>
     </div>
-  </Layout>
+  </div>
+  <div
+    class="flex flex-row items-center h-16 container-input bg-white w-full px-4"
+  >
+    <div class="flex-grow ml-4">
+      <div class="relative w-full">
+        <input
+          v-model="newMessage"
+          @input="sendTypingEvent"
+          @keyup.enter="sendMessage"
+          type="text"
+          class="inputText flex w-full border rounded-xl text-sm h-8"
+          placeholder="Entrez votre messages..."
+        />
+        <button
+          class="
+            absolute
+            flex
+            items-center
+            justify-center
+            h-full
+            w-12
+            right-0
+            top-0
+            text-gray-400
+            hover:text-gray-600
+          "
+        >
+          <svg
+            class="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+    <div class="ml-4">
+      <button
+        @click="sendMessage"
+        class="
+          flex
+          items-center
+          justify-center
+          bg-green
+          rounded-xl
+          text-white
+          px-4
+          text-sm
+          py-1
+          flex-shrink-0
+        "
+      >
+        <span>Envoyer</span>
+      </button>
+    </div>
+  </div>
 </template>
-
 <script>
 import { nextTick } from "vue";
-import Groups from "./Groups.vue";
-import Layout from "../layouts/index.vue";
 export default {
   props: ["user", "group"],
-  components: {
-    Groups,
-    Layout,
-  },
   data() {
     return {
       messages: [],
       newMessage: "",
       activeUser: false,
+      loading: true,
     };
+  },
+
+  updated() {
+    this.loading = false;
   },
 
   created() {
@@ -345,6 +215,14 @@ export default {
         .get("/api/messages", { params: { group_id: this.group } })
         .then((response) => {
           this.messages = response.data[0].messages;
+          this.messages.forEach((message) => {
+            let hours = new Date(message.created_at).getHours()
+            let minutes = new Date(message.created_at).getMinutes()
+            if(minutes < 10){
+              minutes = `0${minutes}`
+            }
+            message.time = `${hours}:${minutes}`
+          })
         });
     },
 
@@ -383,8 +261,10 @@ export default {
 };
 </script>
 <style scoped>
+input {
+  outline: none !important;
+}
 .new-message {
-  background-color: #6366f1;
   width: 150px;
   padding-top: 10px;
   padding-bottom: 10px;
@@ -392,7 +272,64 @@ export default {
   color: white;
   margin-bottom: 20px;
   position: sticky;
-  bottom: 0;
+  bottom: 10px;
   display: none;
+}
+.messages {
+  height: 100%;
+}
+.container-messages {
+  height: 482px;
+}
+.container-input {
+  border-bottom-right-radius: 10px;
+}
+.loading {
+  align-items: center;
+  display: flex;
+}
+
+.loading .dot {
+  animation: TypingAnimation 1.8s infinite ease-in-out;
+  background-color: #62BE93;
+  border-radius: 50%;
+  height: 15px;
+  margin-right: 10px;
+  vertical-align: middle;
+  width: 15px;
+  display: inline-block;
+}
+
+.loading .dot:nth-child(1) {
+  animation-delay: 200ms;
+}
+
+.loading .dot:nth-child(2) {
+  animation-delay: 300ms;
+}
+
+.loading .dot:nth-child(3) {
+  animation-delay: 400ms;
+}
+
+.loading .dot:last-child {
+  margin-right: 0;
+}
+.name{
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+.other-message{
+  padding-right: 15px;
+  padding-left: 10px;
+}
+.perso-message{
+  padding-left: 15px;
+  padding-right: 10px;
+}
+.time{
+  font-size: 10px;
+  margin-top: 5px;
+  text-align: right;
 }
 </style>

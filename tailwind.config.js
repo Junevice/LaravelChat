@@ -16,6 +16,7 @@ module.exports = {
                 green: '#62BE93',
                 background: '#E3E4F1',
                 primary: '#707070',
+                'gray-message': '#CCCCCC',
             }
         },
     },
