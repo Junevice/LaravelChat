@@ -2,6 +2,7 @@ import {createRouter, createWebHistory} from 'vue-router';
 import UserIndex from '../components/UserIndex';
 import Chats from '../components/Chats';
 import Dashboard from '../pages/Dashboard';
+import Parameters from '../pages/Parameters';
 
 const routes = [
     {
@@ -19,6 +20,11 @@ const routes = [
         name:'user.index',
         component: UserIndex,
     },
+    {
+        path:'/parameters',
+        name:'parameters.modifyProfile',
+        component: Parameters,
+    }
 ];
 
 export default createRouter({

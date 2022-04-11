@@ -73,4 +73,14 @@ class UserController extends Controller
         $user->delete();
         return response()->noContent();
     }
+
+    /**
+     * Search users from an entry in an input
+     * 
+     * @param str $entry
+     * @return \Illuminate\Http\Response
+     */
+    public function search($entry){
+        return User::where('name', 'like','%' . $entry . '%')->get();
+    }
 }
