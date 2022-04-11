@@ -82,11 +82,11 @@ class GroupController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Group  $group
+     * @param str $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Group $group)
+    public function destroy(Group $group, $id)
     {
-        $group->delete();
-        return response()->noContent();
+        $group->users()->detach($id);
     }
 }
