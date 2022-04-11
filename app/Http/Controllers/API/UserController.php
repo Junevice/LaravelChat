@@ -36,9 +36,9 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show($id)
     {
-        //
+        return UserResource::make(User::where('id', $id)->get()); 
     }
 
     /**
@@ -50,7 +50,16 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        $user->update($request->only([
+            'name',
+            'description',
+            'avatar',
+        ]));
+
+        if($request->password!==""){
+            $user->password = bcrypt($request->password);
+            $user->save();
+        }
     }
 
     /**
@@ -61,6 +70,7 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        $user->delete();
+        return response()->noContent();
     }
 }

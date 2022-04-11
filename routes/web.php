@@ -18,6 +18,7 @@ use App\Http\Controllers\SocialController;
 Route::get('/', function () {
     return view('welcome');
 });
+
 Route::get('groups/{id}', function($id){
     $query = auth()->user()->groups()->get()->pluck('id');
     $ids = [];
@@ -28,15 +29,10 @@ Route::get('groups/{id}', function($id){
     return view('groups', ['id' => $id]);
 })->middleware(['auth:sanctum'])->name('groups');
 
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth:sanctum'])->name('dashboard');
-
-
-    
-Route::get('/messages', [ChatsController::class, 'fetchMessages']);
-Route::get('/groups', [ChatsController::class, 'fetchGroups']);
-Route::post('/messages', [ChatsController::class, 'sendMessage']);
 
 require __DIR__.'/auth.php';
 

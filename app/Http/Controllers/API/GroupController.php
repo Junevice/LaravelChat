@@ -29,7 +29,21 @@ class GroupController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if($request->name==""){
+            $group_name="Nouvelle conversation";
+        }
+        else{
+            $group_name=$request->name;
+        }
+
+        $group = Group::create([
+            'name'=>$group_name,
+        ]);
+
+        $users = $request->users;
+        foreach($users as $user){
+            $group->users()->attach($user['id']);
+        }
     }
 
     /**
@@ -52,7 +66,16 @@ class GroupController extends Controller
      */
     public function update(Request $request, Group $group)
     {
-        //
+        $group->update($request->only([
+            'name',
+        ]));
+
+        $users = $request->users;
+        $usersync=[];
+        foreach($users as $user){
+            array_push($usersync, $user['id']);
+        }
+        $person->users()->sync($usersync);
     }
 
     /**
@@ -63,6 +86,7 @@ class GroupController extends Controller
      */
     public function destroy(Group $group)
     {
-        //
+        $group->delete();
+        return response()->noContent();
     }
 }

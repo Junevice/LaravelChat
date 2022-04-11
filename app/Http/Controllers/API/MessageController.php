@@ -19,7 +19,7 @@ class MessageController extends Controller
      */
     public function index(Request $request)
     {
-        return Group::with('messages.user')->where('id', $request->group_id)->get();
+        return Group::with('messages.user')->where('id', $request->group_id)->orderBy('created_at', 'DESC')->get();
     }
 
     /**

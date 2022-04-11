@@ -31,6 +31,7 @@ class SocialController extends Controller
             $user->email = $incomingUser->email;
             $user->google_id = $incomingUser->id;
             $user->password = encrypt('password_google'); //make password nullable
+            $user->avatar = "#FFFFFF";
             $user->save();
         }
         
@@ -71,7 +72,8 @@ class SocialController extends Controller
                     'name' => $user->name,
                     'email' => $user->email,
                     'twitter_id'=> $user->id,
-                    'password' => encrypt('password_twitter')
+                    'password' => encrypt('password_twitter'),
+                    'avatar' => '#FFFFFF'
                 ]);
      
                 Auth::guard('web')->login($getUser);
