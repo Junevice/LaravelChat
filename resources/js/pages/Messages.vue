@@ -4,7 +4,7 @@
       <div class="left">
         <div class="top"></div>
         <div class="bot">
-          <Groups :activeGroup="this.groupId" />
+          <Groups :activeGroup="this.groupId" :user="this.user" />
         </div>
       </div>
       <div class="right">

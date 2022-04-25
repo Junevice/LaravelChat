@@ -100,6 +100,12 @@
 
 .bot {
   width: 100%;
+  max-height: 494px;
+  overflow-y: scroll;
+}
+
+.bot::-webkit-scrollbar{
+  display: none;
 }
 
 .left-bot-menu{

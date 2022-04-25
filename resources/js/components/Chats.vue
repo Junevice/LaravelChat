@@ -1,5 +1,9 @@
 <template>
-  <div v-if="this.loading" :key="this.loading" class="h-full flex justify-center items-center">
+  <div
+    v-if="this.loading"
+    :key="this.loading"
+    class="h-full flex justify-center items-center"
+  >
     <div class="loading">
       <div class="dot"></div>
       <div class="dot"></div>
@@ -7,6 +11,28 @@
     </div>
   </div>
   <div class="overflow-hidden container-messages">
+    <div
+      class="
+        w-full
+        bg-gray-message
+        banner
+        flex flex-row
+        justify-end
+        items-center
+      "
+    >
+      <div class="w-full ml-2 text-primary">
+        {{ this.Group.name }}
+      </div>
+      <AdjustmentsIcon
+        class="w-5 text-primary hover:text-green mr-2 cursor-pointer"
+        @click="this.openModal = true"
+      />
+      <TrashIcon
+        class="w-5 text-primary hover:text-red mr-2 cursor-pointer"
+        @click="deleteGroup"
+      />
+    </div>
     <div class="messages flex flex-col overflow-x-auto overflow-y-scroll">
       <div class="flex flex-col h-full">
         <div class="grid grid-cols-12 gap-y-2">
@@ -52,8 +78,7 @@
                     other-message
                     text-white
                     rounded-xl
-                    flex 
-                    flex-col
+                    flex flex-col
                   "
                 >
                   <div class="name">{{ message.user.name }}</div>
@@ -162,9 +187,43 @@
       </button>
     </div>
   </div>
+  <div class="modal" v-bind:class="{ show: openModal }">
+    <div class="contain">
+      <div class="close mt-5">
+        <XIcon @click="this.openModal = false" class="h-5 w-5 text-primary" />
+      </div>
+      <div class="w-full">
+        <p>Modifier le nom</p>
+        <input class="updateName" type="text" :value="this.Group.name" />
+        <button
+          class="bg-green text-white px-4 text-sm flex-shrink-0"
+          @click="updateName"
+        >
+          Modifier le nom
+        </button>
+      </div>
+      <div class="w-full mt-10 mb-5">
+        <p>Rajouter des personnes au groupe</p>
+        <Multiselect
+          v-model="users"
+          :close-on-select="false"
+          :searchable="true"
+          :options="options"
+          mode="tags"
+          placeholder="Veuillez choisir une personne à ajouter au groupe"
+        />
+        <button class="bg-green text-white px-4 text-sm flex-shrink-0">
+          Ajouter au groupe
+        </button>
+      </div>
+    </div>
+  </div>
 </template>
 <script>
 import { nextTick } from "vue";
+import { TrashIcon, AdjustmentsIcon, XIcon } from "@heroicons/vue/solid";
+import Multiselect from "@vueform/multiselect";
+import axios from "axios";
 export default {
   props: ["user", "group"],
   data() {
@@ -173,7 +232,18 @@ export default {
       newMessage: "",
       activeUser: false,
       loading: true,
+      Group: {},
+      users: null,
+      openModal: false,
+      options: [],
     };
+  },
+
+  components: {
+    TrashIcon,
+    AdjustmentsIcon,
+    Multiselect,
+    XIcon,
   },
 
   updated() {
@@ -182,6 +252,8 @@ export default {
 
   created() {
     this.fetchMessages();
+    this.fetchGroup();
+    this.fetchUsers();
 
     Echo.private(`group.${this.group}`)
       .listen("MessageSent", (event) => {
@@ -210,26 +282,44 @@ export default {
   },
 
   methods: {
+    fetchUsers() {
+      axios.get("/api/users").then((response) => {
+        response.data.data.forEach((user) => {
+          if (user.id !== this.user.id) {
+            this.options.push({ value: user, label: user.name });
+          }
+        });
+      });
+    },
+
     fetchMessages() {
       axios
         .get("/api/messages", { params: { group_id: this.group } })
         .then((response) => {
           this.messages = response.data[0].messages;
           this.messages.forEach((message) => {
-            let hours = new Date(message.created_at).getHours()
-            let minutes = new Date(message.created_at).getMinutes()
-            if(minutes < 10){
-              minutes = `0${minutes}`
+            let hours = new Date(message.created_at).getHours();
+            let minutes = new Date(message.created_at).getMinutes();
+            if (minutes < 10) {
+              minutes = `0${minutes}`;
             }
-            message.time = `${hours}:${minutes}`
-          })
+            message.time = `${hours}:${minutes}`;
+          });
         });
     },
 
     sendMessage() {
+      const date = new Date()
+      const hours = date.getHours();
+      let minutes = date.getMinutes();
+      if (minutes < 10) {
+        minutes = `0${minutes}`;
+      }
+      const time = `${hours}:${minutes}`;
       this.messages.push({
         user: this.user,
         message: this.newMessage,
+        time,
       });
       axios.post("/api/messages", {
         message: this.newMessage,
@@ -241,6 +331,19 @@ export default {
         let messages = document.querySelector(".messages");
         messages.scrollTo({ top: messages.scrollHeight, behavior: "smooth" });
       }, 200);
+    },
+
+    updateName() {
+      const name = document.querySelector(".updateName").value;
+      axios
+        .patch(`/api/groups/${this.group}`, {
+          name,
+        })
+        .then(() => location.reload());
+    },
+
+    deleteGroup() {
+      axios.delete(`/api/groups/${this.group}`).then(() => location.reload());
     },
 
     async sendTypingEvent() {
@@ -256,6 +359,12 @@ export default {
       let messages = document.querySelector(".messages");
       messages.scrollTo({ top: messages.scrollHeight, behavior: "smooth" });
       document.querySelector(".new-message").style.display = "none";
+    },
+
+    fetchGroup() {
+      axios.get(`/api/groups/${this.group}`).then((response) => {
+        this.Group = response.data.data[0];
+      });
     },
   },
 };
@@ -276,7 +385,7 @@ input {
   display: none;
 }
 .messages {
-  height: 100%;
+  height: 90%;
 }
 .container-messages {
   height: 482px;
@@ -291,7 +400,7 @@ input {
 
 .loading .dot {
   animation: TypingAnimation 1.8s infinite ease-in-out;
-  background-color: #62BE93;
+  background-color: #62be93;
   border-radius: 50%;
   height: 15px;
   margin-right: 10px;
@@ -315,21 +424,74 @@ input {
 .loading .dot:last-child {
   margin-right: 0;
 }
-.name{
+.name {
   font-size: 12px;
   margin-bottom: 10px;
 }
-.other-message{
+.other-message {
   padding-right: 15px;
   padding-left: 10px;
 }
-.perso-message{
+.perso-message {
   padding-left: 15px;
   padding-right: 10px;
 }
-.time{
+.time {
   font-size: 10px;
   margin-top: 5px;
   text-align: right;
+}
+.banner {
+  height: 50px;
+  border-bottom: 2px solid #707070;
+  border-top-right-radius: 8px;
+}
+.modal {
+  width: 100vw;
+  height: 100vh;
+  background-color: #00000050;
+  z-index: 100;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+.contain {
+  background-color: white;
+  width: 500px;
+  min-height: 300px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  border-radius: 10px;
+  border: 2px solid #707070;
+}
+.contain input {
+  width: 100%;
+  border: 1px solid #d1d5db;
+  outline: none;
+  border-radius: 4px;
+}
+.contain button {
+  padding: 10px 20px;
+  margin: 0 auto;
+  border-radius: 15px;
+  margin-top: 10px;
+}
+.close {
+  width: 100%;
+  display: flex;
+  justify-content: end;
+  margin-top: -5px;
+}
+.close svg {
+  cursor: pointer;
+}
+.show {
+  display: flex;
 }
 </style>

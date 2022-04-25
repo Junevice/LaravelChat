@@ -21,6 +21,8 @@
         "tailwindcss": "^3.0.22"
     },
     "dependencies": {
+        "@heroicons/vue": "^1.0.6",
+        "@vueform/multiselect": "^2.3.3",
         "laravel-echo": "^1.11.3",
         "pusher-js": "^7.0.6",
         "vue": "^3.2.29",
