@@ -4,16 +4,21 @@
             <img :src="'/images/' + this.user.avatar.split('#')[1] + '.svg' " alt="avatar">
             <button @click="this.displayAvatar=true">Modifier l'avatar</button>
         </div>
-        <form class="nom-ctn">
+        <form class="nom-ctn" @submit.prevent="modifyName($event)">
             <label for="nom">Modifier votre nom</label>
-            <input name="nom" type="text" placeholder="Votre nouveau nom" autocomplete="off">
-            <button>Modifier votre nom</button>
+            <input name="nom" id="nom" type="text" placeholder="Votre nouveau nom" autocomplete="off">
+            <button type="submit">Modifier votre nom</button>
         </form>
-        <form class="password-ctn">
+        <form class="description-ctn" @submit.prevent="modifyName($event)">
+            <label for="description">Modifier votre description</label>
+            <input name="description" id="description" type="text" placeholder="Votre nouveau description" autocomplete="off">
+            <button type="submit">Modifier votre description</button>
+        </form>
+        <form class="password-ctn" @submit.prevent="modifyPass($event)">
             <label for="password">Modifier votre mot de passe</label>
-            <input name="password" type="password" placeholder="Votre mot de passe">
-            <input name="password-confirm" type="password" placeholder="Confirmer votre mot de passe">
-            <button @click.prevent="">Modifier le mot de passe</button>
+            <input name="password" id="password" type="password" placeholder="Votre mot de passe">
+            <input name="password-confirm" id="password-confirm" type="password" placeholder="Confirmer votre mot de passe">
+            <button type="submit">Modifier le mot de passe</button>
         </form>
     </div>
     <div class="chooseAvatar" :class="[displayAvatar ? 'show' : '']">
@@ -40,7 +45,6 @@
 <script>
 import useUsers from '../services/userservices';
 
-
 export default{
     data(){
         return{
@@ -56,14 +60,36 @@ export default{
     setup(){
         const {updateUser} = useUsers();
 
-        const modifyAvatar=async(e)=>{
-            const avatar = (e.target.getAttribute('colorcode'));
-            await updateUser('avatar', avatar);
-        }
+            const modifyAvatar=async(e)=>{
+                const avatar = (e.target.getAttribute('colorcode'));
+                await updateUser('avatar', avatar);
+            }
+
+            const modifyName = async(e)=>{
+                const name= e.target.querySelector('#nom').value;
+                await updateUser('name', name);
+            }
+
+            const modifyPass = async(e)=>{
+                const pass = e.target.querySelector('#password').value;
+                const passConfirm = e.target.querySelector('#password-confirm').value;
+                if(pass===passConfirm&&pass.length>=6){
+                    await updateUser('password', pass);
+                }
+                else{
+                    console.log('differents or too short');
+                }
+            }
+        
+            
+        
+        
 
         return{
             updateUser,
-            modifyAvatar
+            modifyAvatar,
+            modifyName,
+            modifyPass
         }
     }
 }
