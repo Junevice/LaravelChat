@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Group;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Resources\GroupResource;
 
 class GroupController extends Controller
 {
@@ -18,7 +19,7 @@ class GroupController extends Controller
     {
         return Group::whereHas('users', function($query) {
             $query->where('user_id', Auth::guard('web')->user()->id);
-        })->get();
+        })->orderBy('created_at', 'DESC')->get();
     }
 
     /**
@@ -52,9 +53,9 @@ class GroupController extends Controller
      * @param  \App\Models\Group  $group
      * @return \Illuminate\Http\Response
      */
-    public function show(Group $group)
+    public function show($id)
     {
-        //
+        return GroupResource::make(Group::where('id', $id)->get());
     }
 
     /**
@@ -64,18 +65,12 @@ class GroupController extends Controller
      * @param  \App\Models\Group  $group
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Group $group)
+    public function update(Request $request, $id)
     {
+        $group = Group::find($id);
         $group->update($request->only([
             'name',
         ]));
-
-        $users = $request->users;
-        $usersync=[];
-        foreach($users as $user){
-            array_push($usersync, $user['id']);
-        }
-        $person->users()->sync($usersync);
     }
 
     /**
@@ -85,8 +80,9 @@ class GroupController extends Controller
      * @param str $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Group $group, $id)
-    {
-        $group->users()->detach($id);
+    public function destroy($id)
+    {   
+        $group = Group::find($id);
+        $group->users()->detach(Auth::guard('web')->user()->id);
     }
 }

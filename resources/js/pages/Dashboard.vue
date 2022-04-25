@@ -4,7 +4,7 @@
       <div class="left">
         <div class="top"></div>
         <div class="bot">
-            <Groups/>
+            <Groups :user="this.user" />
         </div>
       </div>
       <div class="right"></div>
@@ -16,6 +16,7 @@
 import Layout from "../layouts/index.vue";
 import Groups from "../components/Groups.vue";
 export default {
+  props: ["user"],
   components: {
     Layout,
     Groups,
