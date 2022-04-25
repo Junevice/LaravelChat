@@ -26,7 +26,7 @@
                             <a class="px-4 py-2 text-sm text-primary">
                                 Voir profil
                             </a>
-                            <a class="px-4 py-2 text-sm text-primary">
+                            <a href="/parameters"  class="px-4 py-2 text-sm text-primary">
                                 Paramètres
                             </a>
                         </div>

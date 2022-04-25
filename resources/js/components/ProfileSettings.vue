@@ -6,7 +6,7 @@
         </div>
         <form class="email-ctn">
             <label for="email">Modifier votre email</label>
-            <input name="email" type="text" placeholder="Votre nouvelle adresse email">
+            <input name="email" type="text" placeholder="Votre nouvelle adresse email" autocomplete="off">
             <button>Modifier l'adresse email</button>
         </form>
         <form class="password-ctn">
