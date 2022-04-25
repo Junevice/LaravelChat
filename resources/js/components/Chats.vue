@@ -43,7 +43,7 @@
             >
               <div class="flex items-center justify-start flex-row-reverse">
                 <div class="flex items-center justify-center flex-shrink-0">
-                  <img src="/images/rose.svg" width="30" height="30" />
+                  <img :src="'/images/' + this.user.avatar.split('#')[1] + '.svg'" width="30" height="30" />
                 </div>
                 <div
                   class="
@@ -65,8 +65,10 @@
 
             <div v-else class="col-start-1 col-end-8 p-3 rounded-lg">
               <div class="flex flex-row items-center">
-                <div class="flex items-center justify-center flex-shrink-0">
-                  <img src="" />
+                <div
+                  class="flex items-center justify-center flex-shrink-0"
+                > 
+                <img :src="'/images/' + message.user.avatar.split('#')[1] + '.svg'" width="30" height="30" />
                 </div>
                 <div
                   class="
@@ -90,9 +92,6 @@
           </template>
           <div v-if="activeUser" class="col-start-1 col-end-8 p-3 rounded-lg">
             <div class="flex flex-row items-center">
-              <div class="flex items-center justify-center flex-shrink-0">
-                <img src="" />
-              </div>
               <div
                 class="
                   relative
@@ -309,7 +308,7 @@ export default {
     },
 
     sendMessage() {
-      const date = new Date()
+      const date = new Date();
       const hours = date.getHours();
       let minutes = date.getMinutes();
       if (minutes < 10) {
