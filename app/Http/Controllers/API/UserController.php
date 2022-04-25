@@ -50,17 +50,22 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        dd($request);
-        $user->update($request->only([
-            'name',
-            'description',
-            'avatar',
-        ]));
-
-        if($request->password!==""){
-            $user->password = bcrypt($request->password);
-            $user->save();
+        $type = $request['type'];
+        $valeur = $request['value'];
+        
+        switch ($type) {
+            case 'avatar':
+                $user->avatar=$valeur;
+                break;
+            case 'name':
+                $user->name=$valeur;
+                break;
+            case 'password':
+                $user->password = bcrypt($valeur);
+                break;
         }
+        
+        $user->save();
     }
 
     /**
