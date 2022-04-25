@@ -1,7 +1,7 @@
 <template>
     <div class="profile-settings">
         <div class="avatar-ctn">
-            <img src="/images/rose.svg" alt="avatar">
+            <img :src="'/images/' + this.user.avatar.split('#')[1] + '.svg' " alt="avatar">
             <button @click="this.displayAvatar=true">Modifier l'avatar</button>
         </div>
         <form class="nom-ctn">
@@ -47,6 +47,9 @@ export default{
             displayAvatar: false,
         }
     },
+
+    props: ['user'],
+
     methods:{
 
     },
