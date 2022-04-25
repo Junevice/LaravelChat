@@ -8,9 +8,19 @@ export default function useUsers(){
         users.value = response.data.data;
     };
 
+    const updateUser = async (type, value)=>{
+        const data = {type: type, value:value}
+        const user = await Promise.all([
+            await axios.get('/api/userinfos')
+        ]);
+        
+        await axios.put('/api/persons/' + user.data.id , data);
+    }
+
     return {
         users,
         getUsers,
+        updateUser
     }
 }
 

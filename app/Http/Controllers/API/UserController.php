@@ -50,6 +50,7 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
+        dd($request);
         $user->update($request->only([
             'name',
             'description',

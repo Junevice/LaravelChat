@@ -6,7 +6,7 @@
         <div class="bot">
             <ul class="left-bot-menu">
                 <li class="active">Modifier Profile <span>></span></li>
-                <li>Notification <span>></span></li>
+                <li>Notifications <span>></span></li>
                 <li>Apparence <span>></span></li>
             </ul>
         </div>

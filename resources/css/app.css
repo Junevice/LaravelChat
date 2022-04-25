@@ -161,7 +161,7 @@
   margin-top:0.8rem;
 }
 
-.profile-settings .email-ctn, .profile-settings .password-ctn{
+.profile-settings .nom-ctn, .profile-settings .password-ctn{
   margin-top: 2.5rem;
   display:flex;
   flex-direction: column;
@@ -172,4 +172,73 @@
   background-color: white;
   border-radius: 5px;
   margin-top: 0.5rem;
+}
+
+.closeAvatar{
+  position: absolute;
+  top: 30px;
+  right:30px;
+  width: 30px;
+  height:30px;
+  cursor: pointer;
+}
+
+.crossPart{
+  width: 5px;
+  height: 30px;
+  background-color: white;
+}
+
+.tilt-left, .tilt-right{
+  position: absolute;
+}
+
+.tilt-right{
+  transform: rotate(45deg);
+}
+
+.tilt-left{
+  transform: rotate(-45deg);
+}
+
+.chooseAvatar{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height:100vh;
+  background-color: rgba(0,0,0,0.7);
+  z-index: 5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 1s ease-in-out;
+}
+
+.chooseAvatar.show{
+  opacity: 1;
+  pointer-events: all;
+}
+
+.chooseAvatar h1{
+  color: white;
+  font-weight: 600;
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+}
+
+.avatar-lign{
+  width: 40vw;
+  display: flex;
+  justify-content: space-around;
+  margin: 1rem 0;
+}
+
+.avatar-lign img{
+  cursor: pointer;
+  width: 100px;
+  height: 100px;
 }
