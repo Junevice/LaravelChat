@@ -146,6 +146,10 @@
   overflow-y: scroll;
 }
 
+.profile-settings::-webkit-scrollbar{
+  display: none;
+}
+
 
 .profile-settings .avatar-ctn{
   max-height: 20%;
