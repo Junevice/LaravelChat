@@ -1428,7 +1428,11 @@ nav{
   transition: all 0.3s ease-in-out;
   border : 1px solid transparent;
 }
-.profile-settings button:hover, .modal button:hover{
+.sendBtn{
+  border:1px solid transparent;
+  transition: all 0.3s ease-in-out;
+}
+.profile-settings button:hover, .modal button:hover, .sendBtn:hover{
   color:#62BE93;
   background-color: white;
   border-color: #62BE93;

@@ -25344,6 +25344,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         return location.reload();
       });
     },
+    updateUsers: function updateUsers() {
+      if (!this.users) return;
+      var users = JSON.parse(JSON.stringify(this.users));
+      axios__WEBPACK_IMPORTED_MODULE_3___default().patch("/api/groups/".concat(this.group), {
+        users: users
+      }).then(function () {
+        return location.reload();
+      });
+    },
     deleteGroup: function deleteGroup() {
       axios__WEBPACK_IMPORTED_MODULE_3___default()["delete"]("/api/groups/".concat(this.group)).then(function () {
         return location.reload();
@@ -25522,6 +25531,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       displayAvatar: false
     };
   },
+  props: ['user'],
   methods: {},
   setup: function setup() {
     var toaster = (0,_meforma_vue_toaster__WEBPACK_IMPORTED_MODULE_2__.createToaster)({});
@@ -25789,6 +25799,18 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     Layout: _layouts_index_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
     ProfileSettings: _components_ProfileSettings_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
+  data: function data() {
+    return {
+      user: {}
+    };
+  },
+  created: function created() {
+    var _this = this;
+
+    axios.get('/api/userinfos').then(function (response) {
+      _this.user = response.data;
+    });
   }
 });
 
@@ -25957,14 +25979,6 @@ var _hoisted_38 = /*#__PURE__*/_withScopeId(function () {
   );
 });
 
-var _hoisted_39 = /*#__PURE__*/_withScopeId(function () {
-  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-    "class": "bg-green text-white px-4 text-sm flex-shrink-0"
-  }, " Ajouter au groupe ", -1
-  /* HOISTED */
-  );
-});
-
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _this = this;
 
@@ -26045,7 +26059,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onClick: _cache[5] || (_cache[5] = function () {
       return $options.sendMessage && $options.sendMessage.apply($options, arguments);
     }),
-    "class": "flex items-center justify-center bg-green rounded-xl text-white px-4 text-sm py-1 flex-shrink-0"
+    "class": "flex items-center justify-center bg-green rounded-xl text-white px-4 text-sm py-1 flex-shrink-0 sendBtn"
   }, _hoisted_31)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["modal", {
       show: $data.openModal
@@ -26078,7 +26092,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     placeholder: "Veuillez choisir une personne à ajouter au groupe"
   }, null, 8
   /* PROPS */
-  , ["modelValue", "options"]), _hoisted_39])])], 2
+  , ["modelValue", "options"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    "class": "bg-green text-white px-4 text-sm flex-shrink-0",
+    onClick: _cache[9] || (_cache[9] = function () {
+      return $options.updateUsers && $options.updateUsers.apply($options, arguments);
+    })
+  }, " Ajouter au groupe ")])])], 2
   /* CLASS */
   )], 64
   /* STABLE_FRAGMENT */
@@ -26218,13 +26237,7 @@ var _hoisted_1 = {
 var _hoisted_2 = {
   "class": "avatar-ctn"
 };
-
-var _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-  src: "/images/rose.svg",
-  alt: "avatar"
-}, null, -1
-/* HOISTED */
-);
+var _hoisted_3 = ["src"];
 
 var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
   "for": "nom"
@@ -26333,7 +26346,12 @@ var _hoisted_22 = {
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _this = this;
 
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [_hoisted_3, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
+    src: '/images/' + this.user.avatar.split('#')[1] + '.svg',
+    alt: "avatar"
+  }, null, 8
+  /* PROPS */
+  , _hoisted_3), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     onClick: _cache[0] || (_cache[0] = function ($event) {
       return _this.displayAvatar = true;
     })
@@ -26722,13 +26740,19 @@ var _hoisted_3 = {
   "class": "right"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
+  var _this = this;
+
   var _component_ProfileSettings = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("ProfileSettings");
 
   var _component_Layout = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Layout");
 
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Layout, null, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [_hoisted_2, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_ProfileSettings)])])];
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [_hoisted_2, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_ProfileSettings, {
+        user: _this.user
+      }, null, 8
+      /* PROPS */
+      , ["user"])])])];
     }),
     _: 1
     /* STABLE */

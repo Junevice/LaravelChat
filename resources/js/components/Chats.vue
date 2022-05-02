@@ -188,6 +188,7 @@
           text-sm
           py-1
           flex-shrink-0
+          sendBtn
         "
       >
         <span>Envoyer</span>
