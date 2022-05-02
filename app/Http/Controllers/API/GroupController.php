@@ -67,10 +67,17 @@ class GroupController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $name = $request->name;
+        $users = $request->users;
         $group = Group::find($id);
-        $group->update($request->only([
-            'name',
-        ]));
+        if($name){
+            $group->update($name);
+        }
+        if($users){
+            foreach($users as $user){
+                $group->users()->attach($user['id']);
+            }
+        }
     }
 
     /**

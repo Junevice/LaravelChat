@@ -43,7 +43,11 @@
             >
               <div class="flex items-center justify-start flex-row-reverse">
                 <div class="flex items-center justify-center flex-shrink-0">
-                  <img :src="'/images/' + this.user.avatar.split('#')[1] + '.svg'" width="30" height="30" />
+                  <img
+                    :src="'/images/' + this.user.avatar.split('#')[1] + '.svg'"
+                    width="30"
+                    height="30"
+                  />
                 </div>
                 <div
                   class="
@@ -65,10 +69,14 @@
 
             <div v-else class="col-start-1 col-end-8 p-3 rounded-lg">
               <div class="flex flex-row items-center">
-                <div
-                  class="flex items-center justify-center flex-shrink-0"
-                > 
-                <img :src="'/images/' + message.user.avatar.split('#')[1] + '.svg'" width="30" height="30" />
+                <div class="flex items-center justify-center flex-shrink-0">
+                  <img
+                    :src="
+                      '/images/' + message.user.avatar.split('#')[1] + '.svg'
+                    "
+                    width="30"
+                    height="30"
+                  />
                 </div>
                 <div
                   class="
@@ -211,7 +219,7 @@
           mode="tags"
           placeholder="Veuillez choisir une personne à ajouter au groupe"
         />
-        <button class="bg-green text-white px-4 text-sm flex-shrink-0">
+        <button class="bg-green text-white px-4 text-sm flex-shrink-0" @click="updateUsers">
           Ajouter au groupe
         </button>
       </div>
@@ -337,6 +345,16 @@ export default {
       axios
         .patch(`/api/groups/${this.group}`, {
           name,
+        })
+        .then(() => location.reload());
+    },
+
+    updateUsers() {
+      if (!this.users) return;
+      const users = JSON.parse(JSON.stringify(this.users));
+      axios
+        .patch(`/api/groups/${this.group}`, {
+          users,
         })
         .then(() => location.reload());
     },
