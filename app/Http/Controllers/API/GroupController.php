@@ -67,7 +67,7 @@ class GroupController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $name = $request->name;
+        $name = $request->only(['name']);
         $users = $request->users;
         $group = Group::find($id);
         if($name){
