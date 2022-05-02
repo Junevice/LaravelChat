@@ -9,7 +9,7 @@
             <input name="nom" id="nom" type="text" placeholder="Votre nouveau nom" autocomplete="off">
             <button type="submit">Modifier votre nom</button>
         </form>
-        <form class="description-ctn" @submit.prevent="modifyName($event)">
+        <form class="description-ctn" @submit.prevent="modifyDescription($event)">
             <label for="description">Modifier votre description</label>
             <input name="description" id="description" type="text" placeholder="Votre nouveau description" autocomplete="off">
             <button type="submit">Modifier votre description</button>
@@ -28,22 +28,23 @@
         </div>
         <h1>Choisissez votre avatar</h1>
         <div class="avatar-lign">
-            <img src="/images/Beige.svg" colorCode="#FADCA8" @click="($event)=>{modifyAvatar($event); this.displayAvatar=false}"/>
-            <img src="/images/Bleu.svg" colorCode="#88BBE4" @click="($event)=>{modifyAvatar($event); this.displayAvatar=false}"/>
-            <img src="/images/GrisClair.svg" colorCode="#D3D3D3" @click="($event)=>{modifyAvatar($event); this.displayAvatar=false}"/>
-            <img src="/images/GrisFonce.svg" colorCode="#C0C0C0" @click="($event)=>{modifyAvatar($event); this.displayAvatar=false}"/>
+            <img src="/images/FADCA8.svg" colorCode="#FADCA8" @click="($event)=>{modifyAvatar($event); this.displayAvatar=false}"/>
+            <img src="/images/88BBE4.svg" colorCode="#88BBE4" @click="($event)=>{modifyAvatar($event); this.displayAvatar=false}"/>
+            <img src="/images/D3D3D3.svg" colorCode="#D3D3D3" @click="($event)=>{modifyAvatar($event); this.displayAvatar=false}"/>
+            <img src="/images/C0C0C0.svg" colorCode="#C0C0C0" @click="($event)=>{modifyAvatar($event); this.displayAvatar=false}"/>
         </div>
         <div class="avatar-lign">
-            <img src="/images/Jaune.svg" colorCode="#FFEDBC" @click="($event)=>{modifyAvatar($event); this.displayAvatar=false}"/>
-            <img src="/images/Orange.svg" colorCode="#FFB272" @click="($event)=>{modifyAvatar($event); this.displayAvatar=false}"/>
-            <img src="/images/Pelote.svg" colorCode="#FFFFFF" @click="($event)=>{modifyAvatar($event); this.displayAvatar=false}"/>
-            <img src="/images/Rose.svg" colorCode="#FF9999" @click="($event)=>{modifyAvatar($event); this.displayAvatar=false}"/>
+            <img src="/images/FFEDBC.svg" colorCode="#FFEDBC" @click="($event)=>{modifyAvatar($event); this.displayAvatar=false}"/>
+            <img src="/images/FFB272.svg" colorCode="#FFB272" @click="($event)=>{modifyAvatar($event); this.displayAvatar=false}"/>
+            <img src="/images/FFFFFF.svg" colorCode="#FFFFFF" @click="($event)=>{modifyAvatar($event); this.displayAvatar=false}"/>
+            <img src="/images/FF9999.svg" colorCode="#FF9999" @click="($event)=>{modifyAvatar($event); this.displayAvatar=false}"/>
         </div>
     </div>
 </template>
 
 <script>
 import useUsers from '../services/userservices';
+import { createToaster } from "@meforma/vue-toaster";
 
 export default{
     data(){
@@ -55,16 +56,30 @@ export default{
 
     },
     setup(){
+        const toaster = createToaster({});
         const {updateUser} = useUsers();
 
             const modifyAvatar=async(e)=>{
                 const avatar = (e.target.getAttribute('colorcode'));
                 await updateUser('avatar', avatar);
+                location.reload();
             }
 
             const modifyName = async(e)=>{
                 const name= e.target.querySelector('#nom').value;
-                await updateUser('name', name);
+                if(name.length>=3){
+                    await updateUser('name', name);
+                    location.reload();
+                }
+                else{
+                    toaster.error('Nom saisi trop court. 3 caractères minimum.')
+                }
+            }
+
+            const modifyDescription = async(e)=>{
+                const description = e.target.querySelector('#description').value;
+                await updateUser('description ', description );
+                location.reload();
             }
 
             const modifyPass = async(e)=>{
@@ -72,9 +87,10 @@ export default{
                 const passConfirm = e.target.querySelector('#password-confirm').value;
                 if(pass===passConfirm&&pass.length>=6){
                     await updateUser('password', pass);
+                    location.reload();
                 }
                 else{
-                    console.log('differents or too short');
+                    toaster.error('Mots de passes invalides. 6 caractères minimums.');
                 }
             }
         
@@ -86,6 +102,7 @@ export default{
             updateUser,
             modifyAvatar,
             modifyName,
+            modifyDescription,
             modifyPass
         }
     }

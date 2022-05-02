@@ -6,7 +6,7 @@
 
 <style scoped>
     .main{
-        height: 100vh;
+        height: 90vh;
         background-image: url('/images/background.svg');
         background-size: contain;
         background-repeat: no-repeat;

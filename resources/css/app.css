@@ -6,6 +6,11 @@
   box-sizing: border-box;
 }
 
+nav{
+  height:10vh;
+  padding: 1.5rem 0 0.5rem 0;
+}
+
 .typing {
   align-items: center;
   display: flex;
@@ -163,7 +168,7 @@
   max-width: 15%;
 }
 
-.profile-settings button{
+.profile-settings button, .modal button{
   background-color: #62BE93;
   padding: 0.4rem 1rem;
   color:white;
@@ -171,6 +176,14 @@
   font-size: 0.9rem;
   cursor: pointer;
   margin-top:0.8rem;
+  transition: all 0.3s ease-in-out;
+  border : 1px solid transparent;
+}
+
+.profile-settings button:hover, .modal button:hover{
+  color:#62BE93;
+  background-color: white;
+  border-color: #62BE93;
 }
 
 .profile-settings .nom-ctn, .profile-settings .description-ctn, .profile-settings .password-ctn{
@@ -253,4 +266,14 @@
   cursor: pointer;
   width: 100px;
   height: 100px;
+}
+
+/* Style bouton paypal */
+#paypal{
+  height:40px;
+}
+
+#paypal input{
+  opacity:0;
+  position : absolute;
 }

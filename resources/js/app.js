@@ -1,4 +1,5 @@
 require('./bootstrap');
+import Toast from '@meforma/vue-toaster';
 
 import Alpine from 'alpinejs';
 
@@ -16,7 +17,10 @@ const app = createApp({
         Chats,
         UserIndex
     }
-}).use(router)
+}).use(router).use(Toast, {
+    // One of the options
+    position: 'bottom'
+})
 .mount('#app');
 
 

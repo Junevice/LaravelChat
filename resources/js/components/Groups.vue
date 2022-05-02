@@ -157,6 +157,7 @@ button {
   border-radius: 0;
   border-bottom: 1px solid #707070;
   border-width: 80%;
+  border : 1px solid transparent;
 }
 button div {
   text-overflow: ellipsis;
@@ -189,7 +190,6 @@ button div {
   border: 2px solid #707070;
 }
 .contain button {
-  border: none;
   border-radius: 20px;
   padding-top: 10px;
   padding-bottom: 10px;

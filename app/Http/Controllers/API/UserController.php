@@ -60,6 +60,9 @@ class UserController extends Controller
             case 'name':
                 $user->name=$valeur;
                 break;
+            case 'description':
+                $user->description=$valeur;
+                break;
             case 'password':
                 $user->password = bcrypt($valeur);
                 break;

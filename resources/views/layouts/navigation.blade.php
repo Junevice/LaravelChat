@@ -1,6 +1,6 @@
 <nav x-data="{ open: false }" class="bg-background">
     <!-- Primary Navigation Menu -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto px-2 sm:px-4 lg:px-6">
         <div class="flex justify-between h-16">
             <div class="flex">
                 <!-- Navigation Links -->
@@ -33,7 +33,14 @@
                             <a href="/parameters"  class="px-4 py-2 text-sm text-primary">
                                 Paramètres
                             </a>
+                            <form action="https://www.paypal.com/donate" method="post" target="_top" id="paypal" class="px-4 py-2 text-sm text-primary">
+                            <input type="hidden" name="hosted_button_id" value="NLYJ4ADZG2KYN" />
+                            <input type="image" src="https://www.paypalobjects.com/fr_FR/FR/i/btn/btn_donate_LG.gif" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Bouton Faites un don avec PayPal"/>
+                            <img alt="" src="https://www.paypal.com/fr_FR/i/scr/pixel.gif" width="1" height="1" />
+                            <a>Faire un don</a>
+                        </form>
                         </div>
+                        
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
                             <x-dropdown-link :href="route('logout')"
@@ -42,11 +49,7 @@
                                 Se déconnecter
                             </x-dropdown-link>
                         </form>
-                        <form action="https://www.paypal.com/donate" method="post" target="_top">
-                            <input type="hidden" name="hosted_button_id" value="NLYJ4ADZG2KYN" />
-                            <input type="image" src="https://www.paypalobjects.com/fr_FR/FR/i/btn/btn_donate_LG.gif" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Bouton Faites un don avec PayPal" />
-                            <img alt="" src="https://www.paypal.com/fr_FR/i/scr/pixel.gif" width="1" height="1" />
-                        </form>
+                        
                     </x-slot>
                 </x-dropdown>
             </div>
