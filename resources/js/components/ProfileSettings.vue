@@ -1,7 +1,7 @@
 <template>
     <div class="profile-settings">
         <div class="avatar-ctn">
-            <img :src="'/images/' + this.user.avatar.split('#')[1] + '.svg' " alt="avatar">
+            <img v-if="this.user.avatar" :src="'/images/' + this.user.avatar.split('#')[1] + '.svg' " alt="avatar">
             <button @click="this.displayAvatar=true">Modifier l'avatar</button>
         </div>
         <form class="nom-ctn" @submit.prevent="modifyName($event)">
